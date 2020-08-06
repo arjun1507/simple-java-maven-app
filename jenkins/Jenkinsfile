@@ -1,10 +1,23 @@
 pipeline {
     agent {
-        docker {
-            image 'maven:3-alpine'
-            args '-v /root/.m2:/root/.m2'
-        }
+        any {
+            tools {
+                maven 'Maven'
+                jdk 'Java_Home'
+            }
+                    }
     }
+     stages {
+
+         stage ("initialize") {
+             steps {
+                 sh '''
+                 echo "PATH = ${PATH}"
+                 echo "M2_HOME = ${M2_HOME}"
+                 '''
+                 }
+      }
+    
     stages {
         stage('Build') {
             steps {
