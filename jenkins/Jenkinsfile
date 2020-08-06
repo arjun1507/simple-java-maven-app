@@ -1,20 +1,26 @@
-pipeline { 
-    agent any 
-    options {
-        skipStagesAfterUnstable()
+pipeline {
+    agent {
+        docker {
+            image 'maven:3-alpine'
+            args '-v /root/.m2:/root/.m2'
+        }
     }
     stages {
-        stage('Build') { 
-            steps { 
-                sh 'make' 
-            }
-        }
-        stage('Test'){
+        stage('Build') {
             steps {
-                sh 'make check'
-                junit 'reports/**/*.xml' 
+                sh 'mvn -B -DskipTests clean package'
             }
         }
-               }
+        stage('Test') { 1
+            steps {
+                sh 'mvn test' 2
+            }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml' 3
+                }
+            }
+        }
     }
+}
 
