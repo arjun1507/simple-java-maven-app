@@ -15,9 +15,9 @@ pipeline {
                     junit 'target/surefire-reports/**/*.xml' 
                 }
             }
-            stage ('Deploy') { 
-                steps {
-                    deploy adapters: [tomcat8(credentialsId: 'deployer', path: '', url: 'http://localhost:8089/')], contextPath: 'Tomcat-implementation', war: '**/*.jar'
+         stage ('Deploy') { 
+             steps {
+                 deploy adapters: [tomcat8(credentialsId: 'deployer', path: '', url: 'http://localhost:8089/')], contextPath: 'Tomcat-implementation', war: '**/*.jar'
                 }
             }    
         }
